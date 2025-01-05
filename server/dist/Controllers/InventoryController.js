@@ -13,49 +13,52 @@ exports.Deleteinventory = exports.getOneinventory = exports.allinventorys = expo
 const client_1 = require("@prisma/client");
 const prisma = new client_1.PrismaClient();
 const Registerinventory = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
     try {
-        const { name, BranchId, userUserId, description, } = req.body;
+        const { name, BranchId, userUserId, description } = req.body;
         const Createinventory = yield prisma.inventory.create({
             data: {
                 name,
                 BranchId: +BranchId,
-                userUserId: +userUserId,
+                userUserId: (_a = req.user) === null || _a === void 0 ? void 0 : _a.UserId,
                 description,
-            }
+            },
         });
         return res.status(201).json({
-            message: "successfully created "
+            message: "successfully created ",
+            Createinventory
         });
     }
     catch (error) {
         return res.status(500).json({
-            message: "something went wrong please try again"
+            message: "something went wrong please try again",
         });
     }
 });
 exports.Registerinventory = Registerinventory;
+// \\
 const Updateinventory = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { name, BranchId, userUserId, description, } = req.body;
+        const { name, BranchId, userUserId, description } = req.body;
         const { id } = req.params;
         const upd = yield prisma.inventory.update({
             where: {
-                InventoryId: +id
+                InventoryId: +id,
             },
             data: {
                 name,
                 BranchId: +BranchId,
                 userUserId: +userUserId,
                 description,
-            }
+            },
         });
         return res.status(201).json({
-            message: "successfully updated "
+            message: "successfully updated ",
         });
     }
     catch (error) {
         return res.status(500).json({
-            message: "something went wrong please try again"
+            message: "something went wrong please try again",
         });
     }
 });
@@ -67,7 +70,7 @@ const allinventorys = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     }
     catch (error) {
         return res.status(500).json({
-            message: "something went wrong please try again"
+            message: "something went wrong please try again",
         });
     }
 });
@@ -77,14 +80,14 @@ const getOneinventory = (req, res) => __awaiter(void 0, void 0, void 0, function
         const { id } = req.params;
         const inventory = yield prisma.inventory.findFirst({
             where: {
-                InventoryId: +id
-            }
+                InventoryId: +id,
+            },
         });
         return res.status(201).json(inventory);
     }
     catch (error) {
         return res.status(500).json({
-            message: "something went wrong please try again"
+            message: "something went wrong please try again",
         });
     }
 });
@@ -94,14 +97,14 @@ const Deleteinventory = (req, res) => __awaiter(void 0, void 0, void 0, function
         const { id } = req.params;
         const del = yield prisma.inventory.delete({
             where: {
-                InventoryId: +id
-            }
+                InventoryId: +id,
+            },
         });
         return res.status(201).json(del);
     }
     catch (error) {
         return res.status(500).json({
-            message: "something went wrong please try again"
+            message: "something went wrong please try again",
         });
     }
 });

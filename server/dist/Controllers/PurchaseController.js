@@ -12,100 +12,122 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Deletepurchase = exports.getOnepurchase = exports.allpurchases = exports.Updatepurchase = exports.Registerpurchase = void 0;
 const client_1 = require("@prisma/client");
 const prisma = new client_1.PrismaClient();
+// Register a new purchase
 const Registerpurchase = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
     try {
-        const { quantity, totalAmount, ProductId, VendorId, userUserId, } = req.body;
+        const { quantity, totalAmount, VendorId, PurchaseStatus = "PENDING", } = req.body;
         const Createpurchase = yield prisma.purchase.create({
             data: {
                 quantity: +quantity,
                 totalAmount: +totalAmount,
-                ProductId: +ProductId,
+                productProductId: req.body.product,
                 VendorId: +VendorId,
-                userUserId: +userUserId,
-            }
+                PurchaseStatus,
+                userUserId: (_a = req.user) === null || _a === void 0 ? void 0 : _a.UserId,
+            },
         });
         return res.status(201).json({
-            message: "successfully created purchase",
-            Createpurchase
+            message: "Successfully created purchase",
+            Createpurchase,
         });
     }
     catch (error) {
+        console.error(error);
         return res.status(500).json({
-            message: "something went wrong please try again"
+            message: "Something went wrong, please try again",
         });
     }
 });
 exports.Registerpurchase = Registerpurchase;
+// Update a purchase
 const Updatepurchase = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
     try {
-        const { quantity, totalAmount, ProductId, VendorId, userUserId, } = req.body;
+        const { quantity, totalAmount, VendorId, PurchaseStatus, } = req.body;
         const { id } = req.params;
-        const upd = yield prisma.purchase.update({
+        const updatedPurchase = yield prisma.purchase.update({
             where: {
-                PurchaseId: +id
+                PurchaseId: +id,
             },
             data: {
                 quantity: +quantity,
                 totalAmount: +totalAmount,
-                ProductId: +ProductId,
+                productProductId: +req.body.prodectid,
                 VendorId: +VendorId,
-                userUserId: +userUserId,
-            }
+                PurchaseStatus,
+                userUserId: (_a = req.user) === null || _a === void 0 ? void 0 : _a.UserId,
+            },
         });
-        return res.status(201).json({
-            message: "successfully updated this purchase",
-            upd
+        return res.status(200).json({
+            message: "Successfully updated purchase",
+            updatedPurchase,
         });
     }
     catch (error) {
+        console.error(error);
         return res.status(500).json({
-            message: "something went wrong please try again"
+            message: "Something went wrong, please try again",
         });
     }
 });
 exports.Updatepurchase = Updatepurchase;
+// Fetch all purchases
 const allpurchases = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const purchases = yield prisma.purchase.findMany();
-        return res.status(201).json(purchases);
+        return res.status(200).json(purchases);
     }
     catch (error) {
+        console.error(error);
         return res.status(500).json({
-            message: "something went wrong please try again"
+            message: "Something went wrong, please try again",
         });
     }
 });
 exports.allpurchases = allpurchases;
+// Fetch a single purchase by ID
 const getOnepurchase = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id } = req.params;
         const purchase = yield prisma.purchase.findFirst({
             where: {
-                PurchaseId: +id
-            }
+                PurchaseId: +id,
+            },
         });
-        return res.status(201).json(purchase);
+        if (!purchase) {
+            return res.status(404).json({
+                message: "Purchase not found",
+            });
+        }
+        return res.status(200).json(purchase);
     }
     catch (error) {
+        console.error(error);
         return res.status(500).json({
-            message: "something went wrong please try again"
+            message: "Something went wrong, please try again",
         });
     }
 });
 exports.getOnepurchase = getOnepurchase;
+// Delete a purchase
 const Deletepurchase = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id } = req.params;
-        const del = yield prisma.purchase.delete({
+        const deletedPurchase = yield prisma.purchase.delete({
             where: {
-                PurchaseId: +id
-            }
+                PurchaseId: +id,
+            },
         });
-        return res.status(201).json(del);
+        return res.status(200).json({
+            message: "Successfully deleted purchase",
+            deletedPurchase,
+        });
     }
     catch (error) {
+        console.error(error);
         return res.status(500).json({
-            message: "something went wrong please try again"
+            message: "Something went wrong, please try again",
         });
     }
 });

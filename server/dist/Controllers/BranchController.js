@@ -13,93 +13,118 @@ exports.Deletebranch = exports.getOnebranch = exports.allbranchs = exports.Updat
 const client_1 = require("@prisma/client");
 const prisma = new client_1.PrismaClient();
 const Registerbranch = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
     try {
-        const { address, userUserId, name, } = req.body;
+        const { address, name } = req.body;
         const Createbranch = yield prisma.branch.create({
             data: {
                 address,
-                userUserId: +userUserId,
                 name,
-            }
+                userUserId: (_a = req.user) === null || _a === void 0 ? void 0 : _a.UserId,
+            },
         });
-        return res.status(201).json({
-            message: "successfully created "
+        res.status(201).json({
+            data: Createbranch,
+            message: "Branch successfully created.",
         });
     }
     catch (error) {
-        return res.status(500).json({
-            message: "something went wrong please try again"
+        console.error(error);
+        res.status(500).json({
+            message: "Something went wrong. Please try again.",
         });
     }
 });
 exports.Registerbranch = Registerbranch;
+// Update Branch
 const Updatebranch = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { address, userUserId, name, } = req.body;
+        const { address, name } = req.body;
         const { id } = req.params;
-        const upd = yield prisma.branch.update({
+        if (!req.user || req.user.UserId === undefined) {
+            res.status(400).json({ message: "User ID is required." });
+            return;
+        }
+        const updatedBranch = yield prisma.branch.update({
             where: {
-                BranchId: +id
+                BranchId: +id,
             },
             data: {
                 address,
-                userUserId: +userUserId,
                 name,
-            }
+                userUserId: req.user.UserId,
+            },
         });
-        return res.status(201).json({
-            message: "successfully updated "
+        res.status(200).json({
+            data: updatedBranch,
+            message: "Branch successfully updated.",
         });
     }
     catch (error) {
-        return res.status(500).json({
-            message: "something went wrong please try again"
+        console.error(error);
+        res.status(500).json({
+            message: "Something went wrong. Please try again.",
         });
     }
 });
 exports.Updatebranch = Updatebranch;
+// Get All Branches
 const allbranchs = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const branchs = yield prisma.branch.findMany();
-        return res.status(201).json(branchs);
+        const branches = yield prisma.branch.findMany();
+        res.status(200).json(branches);
     }
     catch (error) {
-        return res.status(500).json({
-            message: "something went wrong please try again"
+        console.error(error);
+        res.status(500).json({
+            message: "Something went wrong. Please try again.",
         });
     }
 });
 exports.allbranchs = allbranchs;
+// Get One Branch
 const getOnebranch = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id } = req.params;
         const branch = yield prisma.branch.findFirst({
             where: {
-                BranchId: +id
-            }
+                BranchId: +id,
+            },
         });
-        return res.status(201).json(branch);
+        if (!branch) {
+            res.status(404).json({
+                message: "Branch not found.",
+            });
+            return;
+        }
+        res.status(200).json(branch);
     }
     catch (error) {
-        return res.status(500).json({
-            message: "something went wrong please try again"
+        console.error(error);
+        res.status(500).json({
+            message: "Something went wrong. Please try again.",
         });
     }
 });
 exports.getOnebranch = getOnebranch;
+// Delete Branch
 const Deletebranch = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id } = req.params;
-        const del = yield prisma.branch.delete({
+        const deletedBranch = yield prisma.branch.delete({
             where: {
-                BranchId: +id
-            }
+                BranchId: +id,
+            },
         });
-        return res.status(201).json(del);
+        res.status(200).json({
+            data: deletedBranch,
+            message: "Branch successfully deleted.",
+        });
     }
     catch (error) {
-        return res.status(500).json({
-            message: "something went wrong please try again"
+        console.error(error);
+        res.status(500).json({
+            message: "Something went wrong. Please try again.",
         });
     }
 });

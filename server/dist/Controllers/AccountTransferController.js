@@ -13,53 +13,55 @@ exports.DeleteaccountTransfer = exports.getOneaccountTransfer = exports.allaccou
 const client_1 = require("@prisma/client");
 const prisma = new client_1.PrismaClient();
 const RegisteraccountTransfer = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
     try {
-        const { amount, type, userUserId, ToAccountId, FromAccountId, } = req.body;
+        const { amount, type, ToAccountId, FromAccountId } = req.body;
         const CreateaccountTransfer = yield prisma.accountTransfer.create({
             data: {
                 amount: +amount,
                 type,
-                userUserId: +userUserId,
+                userUserId: (_a = req.user) === null || _a === void 0 ? void 0 : _a.UserId,
                 ToAccountId: +ToAccountId,
                 FromAccountId: +FromAccountId,
-            }
+            },
         });
-        return res.status(201).json({
+        res.status(201).json({
             message: "successfully created accountTransfer",
-            CreateaccountTransfer
+            CreateaccountTransfer,
         });
     }
     catch (error) {
-        return res.status(500).json({
-            message: "something went wrong please try again"
+        res.status(500).json({
+            message: "something went wrong please try again",
         });
     }
 });
 exports.RegisteraccountTransfer = RegisteraccountTransfer;
 const UpdateaccountTransfer = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
     try {
-        const { amount, type, userUserId, ToAccountId, FromAccountId, } = req.body;
+        const { amount, type, ToAccountId, FromAccountId } = req.body;
         const { id } = req.params;
         const upd = yield prisma.accountTransfer.update({
             where: {
-                TransferId: +id
+                TransferId: +id,
             },
             data: {
                 amount: +amount,
                 type,
-                userUserId: +userUserId,
+                userUserId: (_a = req.user) === null || _a === void 0 ? void 0 : _a.UserId,
                 ToAccountId: +ToAccountId,
                 FromAccountId: +FromAccountId,
-            }
+            },
         });
-        return res.status(201).json({
+        res.status(201).json({
             message: "successfully updated this accountTransfer",
-            upd
+            upd,
         });
     }
     catch (error) {
-        return res.status(500).json({
-            message: "something went wrong please try again"
+        res.status(500).json({
+            message: "something went wrong please try again",
         });
     }
 });
@@ -67,11 +69,11 @@ exports.UpdateaccountTransfer = UpdateaccountTransfer;
 const allaccountTransfers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const accountTransfers = yield prisma.accountTransfer.findMany();
-        return res.status(201).json(accountTransfers);
+        res.status(201).json(accountTransfers);
     }
     catch (error) {
-        return res.status(500).json({
-            message: "something went wrong please try again"
+        res.status(500).json({
+            message: "something went wrong please try again",
         });
     }
 });
@@ -81,14 +83,14 @@ const getOneaccountTransfer = (req, res) => __awaiter(void 0, void 0, void 0, fu
         const { id } = req.params;
         const accountTransfer = yield prisma.accountTransfer.findFirst({
             where: {
-                TransferId: +id
-            }
+                TransferId: +id,
+            },
         });
-        return res.status(201).json(accountTransfer);
+        res.status(201).json(accountTransfer);
     }
     catch (error) {
-        return res.status(500).json({
-            message: "something went wrong please try again"
+        res.status(500).json({
+            message: "something went wrong please try again",
         });
     }
 });
@@ -98,14 +100,14 @@ const DeleteaccountTransfer = (req, res) => __awaiter(void 0, void 0, void 0, fu
         const { id } = req.params;
         const del = yield prisma.accountTransfer.delete({
             where: {
-                TransferId: +id
-            }
+                TransferId: +id,
+            },
         });
-        return res.status(201).json(del);
+        res.status(201).json(del);
     }
     catch (error) {
-        return res.status(500).json({
-            message: "something went wrong please try again"
+        res.status(500).json({
+            message: "something went wrong please try again",
         });
     }
 });

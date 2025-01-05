@@ -23,16 +23,16 @@ const RegisterproductTransfer = (req, res) => __awaiter(void 0, void 0, void 0, 
                 ToBranchId: +ToBranchId,
                 userUserId: +userUserId,
                 TransferId: +TransferId,
-            }
+            },
         });
         return res.status(201).json({
             message: "successfully created productTransfer",
-            CreateproductTransfer
+            CreateproductTransfer,
         });
     }
     catch (error) {
         return res.status(500).json({
-            message: "something went wrong please try again"
+            message: "something went wrong please try again",
         });
     }
 });
@@ -43,7 +43,7 @@ const UpdateproductTransfer = (req, res) => __awaiter(void 0, void 0, void 0, fu
         const { id } = req.params;
         const upd = yield prisma.productTransfer.update({
             where: {
-                TransferId: +id
+                TransferId: +id,
             },
             data: {
                 quantity: +quantity,
@@ -52,16 +52,16 @@ const UpdateproductTransfer = (req, res) => __awaiter(void 0, void 0, void 0, fu
                 ToBranchId: +ToBranchId,
                 userUserId: +userUserId,
                 TransferId: +TransferId,
-            }
+            },
         });
         return res.status(201).json({
             message: "successfully updated this productTransfer",
-            upd
+            upd,
         });
     }
     catch (error) {
         return res.status(500).json({
-            message: "something went wrong please try again"
+            message: "something went wrong please try again",
         });
     }
 });
@@ -73,7 +73,7 @@ const allproductTransfers = (req, res) => __awaiter(void 0, void 0, void 0, func
     }
     catch (error) {
         return res.status(500).json({
-            message: "something went wrong please try again"
+            message: "something went wrong please try again",
         });
     }
 });
@@ -83,14 +83,14 @@ const getOneproductTransfer = (req, res) => __awaiter(void 0, void 0, void 0, fu
         const { id } = req.params;
         const productTransfer = yield prisma.productTransfer.findFirst({
             where: {
-                TransferId: +id
-            }
+                TransferId: +id,
+            },
         });
         return res.status(201).json(productTransfer);
     }
     catch (error) {
         return res.status(500).json({
-            message: "something went wrong please try again"
+            message: "something went wrong please try again",
         });
     }
 });
@@ -100,14 +100,14 @@ const DeleteproductTransfer = (req, res) => __awaiter(void 0, void 0, void 0, fu
         const { id } = req.params;
         const del = yield prisma.productTransfer.delete({
             where: {
-                TransferId: +id
-            }
+                TransferId: +id,
+            },
         });
         return res.status(201).json(del);
     }
     catch (error) {
         return res.status(500).json({
-            message: "something went wrong please try again"
+            message: "something went wrong please try again",
         });
     }
 });

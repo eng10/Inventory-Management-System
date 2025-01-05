@@ -14,44 +14,44 @@ const client_1 = require("@prisma/client");
 const prisma = new client_1.PrismaClient();
 const RegistershiftCategory = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { name, } = req.body;
+        const { name } = req.body;
         const CreateshiftCategory = yield prisma.shiftCategory.create({
             data: {
                 name,
-            }
+            },
         });
         return res.status(201).json({
             message: "successfully created shiftCategory",
-            CreateshiftCategory
+            CreateshiftCategory,
         });
     }
     catch (error) {
         return res.status(500).json({
-            message: "something went wrong please try again"
+            message: "something went wrong please try again",
         });
     }
 });
 exports.RegistershiftCategory = RegistershiftCategory;
 const UpdateshiftCategory = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { name, } = req.body;
+        const { name } = req.body;
         const { id } = req.params;
         const upd = yield prisma.shiftCategory.update({
             where: {
-                ShiftCategoryId: +id
+                ShiftCategoryId: +id,
             },
             data: {
                 name,
-            }
+            },
         });
         return res.status(201).json({
             message: "successfully updated this shiftCategory",
-            upd
+            upd,
         });
     }
     catch (error) {
         return res.status(500).json({
-            message: "something went wrong please try again"
+            message: "something went wrong please try again",
         });
     }
 });
@@ -63,7 +63,7 @@ const allshiftCategorys = (req, res) => __awaiter(void 0, void 0, void 0, functi
     }
     catch (error) {
         return res.status(500).json({
-            message: "something went wrong please try again"
+            message: "something went wrong please try again",
         });
     }
 });
@@ -73,14 +73,14 @@ const getOneshiftCategory = (req, res) => __awaiter(void 0, void 0, void 0, func
         const { id } = req.params;
         const shiftCategory = yield prisma.shiftCategory.findFirst({
             where: {
-                ShiftCategoryId: +id
-            }
+                ShiftCategoryId: +id,
+            },
         });
         return res.status(201).json(shiftCategory);
     }
     catch (error) {
         return res.status(500).json({
-            message: "something went wrong please try again"
+            message: "something went wrong please try again",
         });
     }
 });
@@ -90,14 +90,14 @@ const DeleteshiftCategory = (req, res) => __awaiter(void 0, void 0, void 0, func
         const { id } = req.params;
         const del = yield prisma.shiftCategory.delete({
             where: {
-                ShiftCategoryId: +id
-            }
+                ShiftCategoryId: +id,
+            },
         });
         return res.status(201).json(del);
     }
     catch (error) {
         return res.status(500).json({
-            message: "something went wrong please try again"
+            message: "something went wrong please try again",
         });
     }
 });

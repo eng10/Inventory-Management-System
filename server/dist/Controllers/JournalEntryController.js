@@ -13,6 +13,7 @@ exports.DeletejournalEntry = exports.getOnejournalEntry = exports.alljournalEntr
 const client_1 = require("@prisma/client");
 const prisma = new client_1.PrismaClient();
 const RegisterjournalEntry = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
     try {
         const { amount, description, AccountId, userUserId, generalJournalGeneralJournalId, } = req.body;
         const CreatejournalEntry = yield prisma.journalEntry.create({
@@ -20,46 +21,47 @@ const RegisterjournalEntry = (req, res) => __awaiter(void 0, void 0, void 0, fun
                 amount: +amount,
                 description,
                 AccountId: +AccountId,
-                userUserId: +userUserId,
+                userUserId: (_a = req.user) === null || _a === void 0 ? void 0 : _a.UserId,
                 generalJournalGeneralJournalId: +generalJournalGeneralJournalId,
-            }
+            },
         });
         return res.status(201).json({
             message: "successfully created journalEntry",
-            CreatejournalEntry
+            CreatejournalEntry,
         });
     }
     catch (error) {
         return res.status(500).json({
-            message: "something went wrong please try again"
+            message: "something went wrong please try again",
         });
     }
 });
 exports.RegisterjournalEntry = RegisterjournalEntry;
 const UpdatejournalEntry = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
     try {
-        const { amount, description, AccountId, userUserId, generalJournalGeneralJournalId, } = req.body;
+        const { amount, description, AccountId, generalJournalGeneralJournalId, } = req.body;
         const { id } = req.params;
         const upd = yield prisma.journalEntry.update({
             where: {
-                JournalEntryId: +id
+                JournalEntryId: +id,
             },
             data: {
                 amount: +amount,
                 description,
                 AccountId: +AccountId,
-                userUserId: +userUserId,
+                userUserId: (_a = req.user) === null || _a === void 0 ? void 0 : _a.UserId,
                 generalJournalGeneralJournalId: +generalJournalGeneralJournalId,
-            }
+            },
         });
         return res.status(201).json({
             message: "successfully updated this journalEntry",
-            upd
+            upd,
         });
     }
     catch (error) {
         return res.status(500).json({
-            message: "something went wrong please try again"
+            message: "something went wrong please try again",
         });
     }
 });
@@ -71,7 +73,7 @@ const alljournalEntrys = (req, res) => __awaiter(void 0, void 0, void 0, functio
     }
     catch (error) {
         return res.status(500).json({
-            message: "something went wrong please try again"
+            message: "something went wrong please try again",
         });
     }
 });
@@ -81,14 +83,14 @@ const getOnejournalEntry = (req, res) => __awaiter(void 0, void 0, void 0, funct
         const { id } = req.params;
         const journalEntry = yield prisma.journalEntry.findFirst({
             where: {
-                JournalEntryId: +id
-            }
+                JournalEntryId: +id,
+            },
         });
         return res.status(201).json(journalEntry);
     }
     catch (error) {
         return res.status(500).json({
-            message: "something went wrong please try again"
+            message: "something went wrong please try again",
         });
     }
 });
@@ -98,14 +100,14 @@ const DeletejournalEntry = (req, res) => __awaiter(void 0, void 0, void 0, funct
         const { id } = req.params;
         const del = yield prisma.journalEntry.delete({
             where: {
-                JournalEntryId: +id
-            }
+                JournalEntryId: +id,
+            },
         });
         return res.status(201).json(del);
     }
     catch (error) {
         return res.status(500).json({
-            message: "something went wrong please try again"
+            message: "something went wrong please try again",
         });
     }
 });

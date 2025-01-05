@@ -13,24 +13,25 @@ exports.DeleteVendor = exports.getOneVendor = exports.allVendors = exports.Updat
 const client_1 = require("@prisma/client");
 const prisma = new client_1.PrismaClient();
 const RegisterVendor = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
     try {
-        const { name, contactInfo, email, userUserId } = req.body;
+        const { name, contactInfo, email } = req.body;
         const CreateVendor = yield prisma.vendor.create({
             data: {
                 name,
                 contactInfo,
                 email,
-                userUserId
-            }
+                userUserId: (_a = req.user) === null || _a === void 0 ? void 0 : _a.UserId,
+            },
         });
         return res.status(201).json({
             message: "successfully created vendor",
-            CreateVendor
+            CreateVendor,
         });
     }
     catch (error) {
         return res.status(500).json({
-            message: "something went wrong please try again"
+            message: "something went wrong please try again",
         });
     }
 });
@@ -41,23 +42,23 @@ const UpdateVendor = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         const { id } = req.params;
         const upd = yield prisma.vendor.update({
             where: {
-                VendorId: +id
+                VendorId: +id,
             },
             data: {
                 name,
                 contactInfo,
                 email,
-                userUserId: +userUserId
-            }
+                userUserId: +userUserId,
+            },
         });
         return res.status(201).json({
             message: "successfully updated this vendor",
-            upd
+            upd,
         });
     }
     catch (error) {
         return res.status(500).json({
-            message: "something went wrong please try again"
+            message: "something went wrong please try again",
         });
     }
 });
@@ -69,7 +70,7 @@ const allVendors = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     }
     catch (error) {
         return res.status(500).json({
-            message: "something went wrong please try again"
+            message: "something went wrong please try again",
         });
     }
 });
@@ -79,14 +80,14 @@ const getOneVendor = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         const { id } = req.params;
         const vendor = yield prisma.vendor.findFirst({
             where: {
-                VendorId: +id
-            }
+                VendorId: +id,
+            },
         });
         return res.status(201).json(vendor);
     }
     catch (error) {
         return res.status(500).json({
-            message: "something went wrong please try again"
+            message: "something went wrong please try again",
         });
     }
 });
@@ -96,14 +97,14 @@ const DeleteVendor = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         const { id } = req.params;
         const del = yield prisma.vendor.delete({
             where: {
-                VendorId: +id
-            }
+                VendorId: +id,
+            },
         });
         return res.status(201).json(del);
     }
     catch (error) {
         return res.status(500).json({
-            message: "something went wrong please try again"
+            message: "something went wrong please try again",
         });
     }
 });

@@ -23,16 +23,16 @@ const RegisterquickOrder = (req, res) => __awaiter(void 0, void 0, void 0, funct
                 ProductId: +ProductId,
                 QuickOrderId: +QuickOrderId,
                 userUserId: +userUserId,
-            }
+            },
         });
         return res.status(201).json({
             message: "successfully created quickOrder",
-            CreatequickOrder
+            CreatequickOrder,
         });
     }
     catch (error) {
         return res.status(500).json({
-            message: "something went wrong please try again"
+            message: "something went wrong please try again",
         });
     }
 });
@@ -43,7 +43,7 @@ const UpdatequickOrder = (req, res) => __awaiter(void 0, void 0, void 0, functio
         const { id } = req.params;
         const upd = yield prisma.quickOrder.update({
             where: {
-                QuickOrderId: +id
+                QuickOrderId: +id,
             },
             data: {
                 quantity: +quantity,
@@ -52,16 +52,16 @@ const UpdatequickOrder = (req, res) => __awaiter(void 0, void 0, void 0, functio
                 ProductId: +ProductId,
                 QuickOrderId: +QuickOrderId,
                 userUserId: +userUserId,
-            }
+            },
         });
         return res.status(201).json({
             message: "successfully updated this quickOrder",
-            upd
+            upd,
         });
     }
     catch (error) {
         return res.status(500).json({
-            message: "something went wrong please try again"
+            message: "something went wrong please try again",
         });
     }
 });
@@ -73,7 +73,7 @@ const allquickOrders = (req, res) => __awaiter(void 0, void 0, void 0, function*
     }
     catch (error) {
         return res.status(500).json({
-            message: "something went wrong please try again"
+            message: "something went wrong please try again",
         });
     }
 });
@@ -83,14 +83,14 @@ const getOnequickOrder = (req, res) => __awaiter(void 0, void 0, void 0, functio
         const { id } = req.params;
         const quickOrder = yield prisma.quickOrder.findFirst({
             where: {
-                QuickOrderId: +id
-            }
+                QuickOrderId: +id,
+            },
         });
         return res.status(201).json(quickOrder);
     }
     catch (error) {
         return res.status(500).json({
-            message: "something went wrong please try again"
+            message: "something went wrong please try again",
         });
     }
 });
@@ -100,14 +100,14 @@ const DeletequickOrder = (req, res) => __awaiter(void 0, void 0, void 0, functio
         const { id } = req.params;
         const del = yield prisma.quickOrder.delete({
             where: {
-                QuickOrderId: +id
-            }
+                QuickOrderId: +id,
+            },
         });
         return res.status(201).json(del);
     }
     catch (error) {
         return res.status(500).json({
-            message: "something went wrong please try again"
+            message: "something went wrong please try again",
         });
     }
 });

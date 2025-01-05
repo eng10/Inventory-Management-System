@@ -13,53 +13,54 @@ exports.Deleteproduct = exports.getOneproduct = exports.allproducts = exports.Up
 const client_1 = require("@prisma/client");
 const prisma = new client_1.PrismaClient();
 const Registerproduct = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
     try {
-        const { name, price, quantity, CategoryId, description, userUserId } = req.body;
+        const { name, price, quantity, description, userUserId } = req.body;
         const Createproduct = yield prisma.product.create({
             data: {
                 name,
                 price,
                 quantity,
-                CategoryId,
+                CategoryId: req.body.categoryid,
                 description,
-                userUserId
-            }
+                userUserId: (_a = req.user) === null || _a === void 0 ? void 0 : _a.UserId,
+            },
         });
         return res.status(201).json({
-            message: "successfully created "
+            message: "successfully created ",
+            Createproduct
         });
     }
     catch (error) {
         return res.status(500).json({
-            message: "something went wrong please try again"
+            message: "something went wrong please try again",
         });
     }
 });
 exports.Registerproduct = Registerproduct;
 const Updateproduct = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
     try {
-        const { name, price, quantity, CategoryId, description, userUserId } = req.body;
+        const { name, price, quantity, description } = req.body;
         const { id } = req.params;
-        const upd = yield prisma.product.update({
+        const updateprodect = yield prisma.product.update({
             where: {
-                ProductId: +id
+                ProductId: +id,
             },
             data: {
                 name,
                 price,
                 quantity,
-                CategoryId,
+                CategoryId: req.body.categoryid,
                 description,
-                userUserId
-            }
+                userUserId: (_a = req.user) === null || _a === void 0 ? void 0 : _a.UserId,
+            },
         });
-        return res.status(201).json({
-            message: "successfully updated "
-        });
+        return res.status(201).json(Object.assign({ message: "successfully updated " }, updateprodect));
     }
     catch (error) {
         return res.status(500).json({
-            message: "something went wrong please try again"
+            message: "something went wrong please try again",
         });
     }
 });
@@ -71,7 +72,7 @@ const allproducts = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     }
     catch (error) {
         return res.status(500).json({
-            message: "something went wrong please try again"
+            message: "something went wrong please try again",
         });
     }
 });
@@ -81,14 +82,14 @@ const getOneproduct = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         const { id } = req.params;
         const product = yield prisma.product.findFirst({
             where: {
-                ProductId: +id
-            }
+                ProductId: +id,
+            },
         });
         return res.status(201).json(product);
     }
     catch (error) {
         return res.status(500).json({
-            message: "something went wrong please try again"
+            message: "something went wrong please try again",
         });
     }
 });
@@ -98,14 +99,14 @@ const Deleteproduct = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         const { id } = req.params;
         const del = yield prisma.product.delete({
             where: {
-                ProductId: +id
-            }
+                ProductId: +id,
+            },
         });
         return res.status(201).json(del);
     }
     catch (error) {
         return res.status(500).json({
-            message: "something went wrong please try again"
+            message: "something went wrong please try again",
         });
     }
 });

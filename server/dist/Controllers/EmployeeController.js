@@ -13,51 +13,53 @@ exports.Deletedeemaployee = exports.getOnedeemaployee = exports.alldeemaployees 
 const client_1 = require("@prisma/client");
 const prisma = new client_1.PrismaClient();
 const Registerdeemaployee = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
     try {
-        const { name, BranchId, DepartmentId, userUserId, } = req.body;
+        const { name, BranchId, DepartmentId } = req.body;
         const Createdeemaployee = yield prisma.employee.create({
             data: {
                 name,
                 BranchId: +BranchId,
                 DepartmentId: +DepartmentId,
-                userUserId: +userUserId,
-            }
+                userUserId: (_a = req.user) === null || _a === void 0 ? void 0 : _a.UserId,
+            },
         });
         return res.status(201).json({
             message: "successfully created employee",
-            Createdeemaployee
+            Createdeemaployee,
         });
     }
     catch (error) {
         return res.status(500).json({
-            message: "something went wrong please try again"
+            message: "something went wrong please try again",
         });
     }
 });
 exports.Registerdeemaployee = Registerdeemaployee;
 const Updatedeemaployee = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
     try {
-        const { name, BranchId, DepartmentId, userUserId, } = req.body;
+        const { name, BranchId, DepartmentId } = req.body;
         const { id } = req.params;
         const upd = yield prisma.employee.update({
             where: {
-                EmployeeId: +id
+                EmployeeId: +id,
             },
             data: {
                 name,
                 BranchId: +BranchId,
                 DepartmentId: +DepartmentId,
-                userUserId: +userUserId,
-            }
+                userUserId: (_a = req.user) === null || _a === void 0 ? void 0 : _a.UserId,
+            },
         });
         return res.status(201).json({
             message: "successfully updated this employee",
-            upd
+            upd,
         });
     }
     catch (error) {
         return res.status(500).json({
-            message: "something went wrong please try again"
+            message: "something went wrong please try again",
         });
     }
 });
@@ -69,7 +71,7 @@ const alldeemaployees = (req, res) => __awaiter(void 0, void 0, void 0, function
     }
     catch (error) {
         return res.status(500).json({
-            message: "something went wrong please try again"
+            message: "something went wrong please try again",
         });
     }
 });
@@ -79,14 +81,14 @@ const getOnedeemaployee = (req, res) => __awaiter(void 0, void 0, void 0, functi
         const { id } = req.params;
         const employee = yield prisma.employee.findFirst({
             where: {
-                EmployeeId: +id
-            }
+                EmployeeId: +id,
+            },
         });
         return res.status(201).json(employee);
     }
     catch (error) {
         return res.status(500).json({
-            message: "something went wrong please try again"
+            message: "something went wrong please try again",
         });
     }
 });
@@ -96,14 +98,14 @@ const Deletedeemaployee = (req, res) => __awaiter(void 0, void 0, void 0, functi
         const { id } = req.params;
         const del = yield prisma.employee.delete({
             where: {
-                EmployeeId: +id
-            }
+                EmployeeId: +id,
+            },
         });
         return res.status(201).json(del);
     }
     catch (error) {
         return res.status(500).json({
-            message: "something went wrong please try again"
+            message: "something went wrong please try again",
         });
     }
 });

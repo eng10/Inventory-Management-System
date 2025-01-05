@@ -2,10 +2,11 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const SaleController_1 = require("../Controllers/SaleController");
+const jwt_1 = require("../helpers/secure/jwt");
 const SaleRouter = (0, express_1.Router)();
-SaleRouter.post('/register', SaleController_1.Registersale);
-SaleRouter.put('/update/:id', SaleController_1.Updatesale);
-SaleRouter.delete('/delete/:id', SaleController_1.Deletesale);
-SaleRouter.get('/:id', SaleController_1.getOnesale);
-SaleRouter.get('/all', SaleController_1.allsales);
+SaleRouter.post("/register", jwt_1.decodeToken, SaleController_1.Registersale);
+SaleRouter.put("/update/:id", SaleController_1.Updatesale);
+SaleRouter.delete("/delete/:id", SaleController_1.Deletesale);
+// SaleRouter.get("/:id", getOnesale);
+// SaleRouter.get("/all", allsales);
 exports.default = SaleRouter;

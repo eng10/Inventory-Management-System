@@ -18,17 +18,17 @@ const RegisterworkShift = (req, res) => __awaiter(void 0, void 0, void 0, functi
         const CreateworkShift = yield prisma.workShift.create({
             data: {
                 name,
-                ShiftCategoryId: +ShiftCategoryId
-            }
+                ShiftCategoryId: +ShiftCategoryId,
+            },
         });
         return res.status(201).json({
             message: "successfully created workShift",
-            CreateworkShift
+            CreateworkShift,
         });
     }
     catch (error) {
         return res.status(500).json({
-            message: "something went wrong please try again"
+            message: "something went wrong please try again",
         });
     }
 });
@@ -39,21 +39,21 @@ const UpdateworkShift = (req, res) => __awaiter(void 0, void 0, void 0, function
         const { id } = req.params;
         const upd = yield prisma.workShift.update({
             where: {
-                WorkShiftId: +id
+                WorkShiftId: +id,
             },
             data: {
                 name,
-                ShiftCategoryId: +ShiftCategoryId
-            }
+                ShiftCategoryId: +ShiftCategoryId,
+            },
         });
         return res.status(201).json({
             message: "successfully updated this workShift",
-            upd
+            upd,
         });
     }
     catch (error) {
         return res.status(500).json({
-            message: "something went wrong please try again"
+            message: "something went wrong please try again",
         });
     }
 });
@@ -65,7 +65,7 @@ const allworkShifts = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     }
     catch (error) {
         return res.status(500).json({
-            message: "something went wrong please try again"
+            message: "something went wrong please try again",
         });
     }
 });
@@ -75,14 +75,14 @@ const getOneworkShift = (req, res) => __awaiter(void 0, void 0, void 0, function
         const { id } = req.params;
         const workShift = yield prisma.workShift.findFirst({
             where: {
-                WorkShiftId: +id
-            }
+                WorkShiftId: +id,
+            },
         });
         return res.status(201).json(workShift);
     }
     catch (error) {
         return res.status(500).json({
-            message: "something went wrong please try again"
+            message: "something went wrong please try again",
         });
     }
 });
@@ -92,14 +92,14 @@ const DeleteworkShift = (req, res) => __awaiter(void 0, void 0, void 0, function
         const { id } = req.params;
         const del = yield prisma.workShift.delete({
             where: {
-                WorkShiftId: +id
-            }
+                WorkShiftId: +id,
+            },
         });
         return res.status(201).json(del);
     }
     catch (error) {
         return res.status(500).json({
-            message: "something went wrong please try again"
+            message: "something went wrong please try again",
         });
     }
 });
