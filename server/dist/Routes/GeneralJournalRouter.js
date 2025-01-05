@@ -1,0 +1,11 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const GeneralJournalController_1 = require("../Controllers/GeneralJournalController");
+const GeneralJournalRouter = (0, express_1.Router)();
+GeneralJournalRouter.post('/register', GeneralJournalController_1.RegistergeneralJournal);
+GeneralJournalRouter.put('/update/:id', GeneralJournalController_1.UpdategeneralJournal);
+GeneralJournalRouter.delete('/delete/:id', GeneralJournalController_1.DeletegeneralJournal);
+GeneralJournalRouter.get('/:id', GeneralJournalController_1.getOnegeneralJournal);
+GeneralJournalRouter.get('/all', GeneralJournalController_1.allgeneralJournals);
+exports.default = GeneralJournalRouter;

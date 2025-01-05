@@ -1,0 +1,11 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const DepartmentController_1 = require("../Controllers/DepartmentController");
+const DepartmentRouter = (0, express_1.Router)();
+DepartmentRouter.post('/register', DepartmentController_1.Registerdepartment);
+DepartmentRouter.put('/update/:id', DepartmentController_1.Updatedepartment);
+DepartmentRouter.delete('/delete/:id', DepartmentController_1.Deletedepartment);
+DepartmentRouter.get('/:id', DepartmentController_1.getOnedepartment);
+DepartmentRouter.get('/all', DepartmentController_1.alldepartments);
+exports.default = DepartmentRouter;

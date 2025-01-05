@@ -1,0 +1,338 @@
+// This is your Prisma schema file with enums and all models
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Enums for predefined system categories and processes
+enum UserRole {
+  ADMIN
+  MANAGER
+  EMPLOYEE
+  CUSTOMER
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+}
+
+enum ShiftType {
+  MORNING
+  EVENING
+  NIGHT
+}
+
+enum TransactionType {
+  CREDIT
+  DEBIT
+}
+
+enum AccountType {
+  ASSET
+  LIABILITY
+  EQUITY
+  INCOME
+  EXPENSE
+}
+
+// Models with enums integrated
+model User {
+  UserId          Int               @id @default(autoincrement())
+  name            String
+  email           String            @unique
+  password        String
+  role            UserRole          @default(ADMIN)
+  createdAt       DateTime          @default(now())
+  ProductCategory ProductCategory[]
+  Product         Product[]
+  Branch          Branch[]
+  Inventory       Inventory[]
+  ProductTransfer ProductTransfer[]
+  Purchase        Purchase[]
+  Sale            Sale[]
+  Booking         Booking[]
+  Employee        Employee[]
+  Vendor          Vendor[]
+  Customer        Customer[]
+  QuickOrder      QuickOrder[]
+  AccountTransfer AccountTransfer[]
+  Expense         Expense[]
+  GeneralJournal  GeneralJournal[]
+  Accounting      Accounting[]
+  JournalEntry    JournalEntry[]
+  Department      Department[]
+}
+
+model Organisation {
+  id                 Int       @id @default(autoincrement())
+  name               String    @unique // Name of the organization
+  description        String? // Optional description of the organization
+  logo               String? // URL or path to the organization's logo
+  email              String?   @unique // Contact email
+  phone              String? // Contact phone number
+  website            String? // Website URL
+  address            String? // Physical address of the organization
+  city               String? // City where the organization is located
+  state              String? // State/Region of the organization
+  country            String? // Country of the organization
+  postalCode         String? // Postal/ZIP code
+  registrationNumber String? // Registration number or ID
+  taxId              String? // Tax identification number
+  foundedAt          DateTime? // Date when the organization was founded
+  industry           String? // Industry or sector of the organization
+  employees          Int? // Approximate number of employees
+  socialLinks        String? // Social media links (stored as JSON)
+  createdAt          DateTime  @default(now()) // Record creation timestamp
+  updatedAt          DateTime  @updatedAt // Record update timestamp
+}
+
+model Product {
+  ProductId   Int               @id @default(autoincrement())
+  name        String
+  description String?
+  quantity    Int
+  price       Float
+  createdAt   DateTime          @default(now())
+  category    ProductCategory?  @relation(fields: [CategoryId], references: [CategoryId])
+  CategoryId  Int?
+  sales       Sale[]
+  purchases   Purchase[]
+  bookings    Booking[]
+  transfers   ProductTransfer[]
+  quickOrders QuickOrder[]
+  User        User?             @relation(fields: [userUserId], references: [UserId])
+  userUserId  Int?
+}
+
+model ProductCategory {
+  CategoryId  Int       @id @default(autoincrement())
+  name        String
+  description String?
+  products    Product[]
+  User        User?     @relation(fields: [userUserId], references: [UserId])
+  userUserId  Int?
+}
+
+model Inventory {
+  InventoryId Int      @id @default(autoincrement())
+  name        String
+  description String?
+  branch      Branch?  @relation(fields: [BranchId], references: [BranchId])
+  BranchId    Int?
+  createdAt   DateTime @default(now())
+  User        User?    @relation(fields: [userUserId], references: [UserId])
+  userUserId  Int?
+}
+
+model Branch {
+  BranchId      Int               @id @default(autoincrement())
+  name          String
+  address       String?
+  inventory     Inventory[]
+  employees     Employee[]
+  transfersFrom ProductTransfer[] @relation("FromBranch")
+  transfersTo   ProductTransfer[] @relation("ToBranch")
+  User          User?             @relation(fields: [userUserId], references: [UserId])
+  userUserId    Int?
+}
+
+model Booking {
+  BookingId   Int           @id @default(autoincrement())
+  product     Product       @relation(fields: [ProductId], references: [ProductId])
+  ProductId   Int
+  customer    Customer      @relation(fields: [CustomerId], references: [CustomerId])
+  CustomerId  Int
+  bookingDate DateTime
+  status      BookingStatus @default(PENDING)
+  User        User?         @relation(fields: [userUserId], references: [UserId])
+  userUserId  Int?
+}
+
+model Sale {
+  SaleId      Int      @id @default(autoincrement())
+  product     Product  @relation(fields: [ProductId], references: [ProductId])
+  ProductId   Int
+  customer    Customer @relation(fields: [CustomerId], references: [CustomerId])
+  CustomerId  Int
+  quantity    Int
+  totalAmount Float
+  saleDate    DateTime @default(now())
+  User        User?    @relation(fields: [userUserId], references: [UserId])
+  userUserId  Int?
+}
+
+enum PurchaseStatus {
+  PENDING
+  COMPLETED
+  CANCELED
+}
+
+model Purchase {
+  PurchaseId       Int            @id @default(autoincrement())
+  vendor           Vendor         @relation(fields: [VendorId], references: [VendorId])
+  VendorId         Int
+  quantity         Int?
+  totalAmount      Float?
+  PurchaseStatus   PurchaseStatus @default(PENDING)
+  purchaseDate     DateTime       @default(now())
+  User             User?          @relation(fields: [userUserId], references: [UserId])
+  userUserId       Int?
+  Product          Product?       @relation(fields: [productProductId], references: [ProductId])
+  productProductId Int?
+}
+
+model ProductTransfer {
+  TransferId   Int      @id @default(autoincrement())
+  product      Product  @relation(fields: [ProductId], references: [ProductId])
+  ProductId    Int
+  fromBranch   Branch   @relation("FromBranch", fields: [FromBranchId], references: [BranchId])
+  FromBranchId Int
+  toBranch     Branch   @relation("ToBranch", fields: [ToBranchId], references: [BranchId])
+  ToBranchId   Int
+  quantity     Int
+  transferDate DateTime @default(now())
+  User         User?    @relation(fields: [userUserId], references: [UserId])
+  userUserId   Int?
+}
+
+model QuickOrder {
+  QuickOrderId Int      @id @default(autoincrement())
+  customer     Customer @relation(fields: [CustomerId], references: [CustomerId])
+  CustomerId   Int
+  product      Product  @relation(fields: [ProductId], references: [ProductId])
+  ProductId    Int
+  quantity     Int
+  totalPrice   Float
+  orderDate    DateTime @default(now())
+  User         User?    @relation(fields: [userUserId], references: [UserId])
+  userUserId   Int?
+}
+
+model Customer {
+  CustomerId  Int          @id @default(autoincrement())
+  name        String
+  email       String?      @unique
+  phone       String?
+  address     String?
+  bookings    Booking[]
+  sales       Sale[]
+  quickOrders QuickOrder[]
+  User        User?        @relation(fields: [userUserId], references: [UserId])
+  userUserId  Int?
+}
+
+model Vendor {
+  VendorId    Int        @id @default(autoincrement())
+  name        String
+  contactInfo String?
+  email       String?    @unique
+  purchases   Purchase[]
+  User        User?      @relation(fields: [userUserId], references: [UserId])
+  userUserId  Int?
+}
+
+model Employee {
+  EmployeeId   Int          @id @default(autoincrement())
+  name         String
+  department   Department   @relation(fields: [DepartmentId], references: [DepartmentId])
+  DepartmentId Int
+  branch       Branch       @relation(fields: [BranchId], references: [BranchId])
+  BranchId     Int
+  workShifts   WorkShift[]
+  Attendance   Attendance[]
+
+  User       User? @relation(fields: [userUserId], references: [UserId])
+  userUserId Int?
+}
+
+model Department {
+  DepartmentId Int        @id @default(autoincrement())
+  name         String
+  employees    Employee[]
+  User         User?      @relation(fields: [userUserId], references: [UserId])
+  userUserId   Int?
+}
+
+model WorkShift {
+  WorkShiftId     Int           @id @default(autoincrement())
+  name            String
+  shiftCategory   ShiftCategory @relation(fields: [ShiftCategoryId], references: [ShiftCategoryId])
+  ShiftCategoryId Int
+  employees       Employee[]
+  type            ShiftType     @default(MORNING)
+}
+
+model ShiftCategory {
+  ShiftCategoryId Int         @id @default(autoincrement())
+  name            String
+  workShifts      WorkShift[]
+}
+
+model Attendance {
+  AttendanceId       Int       @id @default(autoincrement())
+  date               DateTime
+  status             String
+  Employee           Employee? @relation(fields: [employeeEmployeeId], references: [EmployeeId])
+  employeeEmployeeId Int?
+}
+
+model JournalEntry {
+  JournalEntryId                 Int             @id @default(autoincrement())
+  account                        Accounting      @relation(fields: [AccountId], references: [AccountingId])
+  AccountId                      Int
+  amount                         Float
+  description                    String
+  date                           DateTime        @default(now())
+  User                           User?           @relation(fields: [userUserId], references: [UserId])
+  userUserId                     Int?
+  GeneralJournal                 GeneralJournal? @relation(fields: [generalJournalGeneralJournalId], references: [GeneralJournalId])
+  generalJournalGeneralJournalId Int?
+}
+
+model GeneralJournal {
+  GeneralJournalId Int            @id @default(autoincrement())
+  description      String
+  JournalEntry     JournalEntry[]
+  User             User?          @relation(fields: [userUserId], references: [UserId])
+  userUserId       Int?
+}
+
+model Expense {
+  ExpenseId   Int      @id @default(autoincrement())
+  description String
+  amount      Float
+  date        DateTime @default(now())
+  User        User?    @relation(fields: [userUserId], references: [UserId])
+  userUserId  Int?
+}
+
+model Accounting {
+  AccountingId   Int               @id @default(autoincrement())
+  accountName    String
+  accountType    AccountType       @default(EXPENSE)
+  journalEntries JournalEntry[]
+  transfersFrom  AccountTransfer[] @relation("FromAccount")
+  transfersTo    AccountTransfer[] @relation("ToAccount")
+  User           User?             @relation(fields: [userUserId], references: [UserId])
+  userUserId     Int?
+}
+
+model AccountTransfer {
+  TransferId    Int             @id @default(autoincrement())
+  fromAccount   Accounting      @relation("FromAccount", fields: [FromAccountId], references: [AccountingId])
+  FromAccountId Int
+  toAccount     Accounting      @relation("ToAccount", fields: [ToAccountId], references: [AccountingId])
+  ToAccountId   Int
+  amount        Float
+  transferDate  DateTime        @default(now())
+  type          TransactionType
+  User          User?           @relation(fields: [userUserId], references: [UserId])
+  userUserId    Int?
+}
