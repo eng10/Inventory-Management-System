@@ -1,7 +1,6 @@
 import express from "express";
-import cors from 'cors';
-
-import dotenv from "dotenv";
+import cookieParser from "cookie-parser";
+import morgan from "morgan";
 import UserRouter from "./Routes/UserRouter";
 import AccountingRouter from "./Routes/AccountingRouter";
 import AccountingTransferRouter from "./Routes/AccountingTransferRouter";
@@ -25,14 +24,13 @@ import VendorRouter from "./Routes/VendorRouter";
 import WorkShiftRouter from "./Routes/WorkShiftRouter";
 import ExpenseRouter from "./Routes/ExpenseRouter";
 import Organisation from "./Routes/OrganisationRoutes";
-import cookieParser from "cookie-parser";
-import morgan from "morgan";
+import cors from "cors";
+import dotenv from "dotenv";
 
 dotenv.config();
+const port = process.env.port;
 
 const app = express();
-
-app.use(express.json());
 app.use(express.json());
 app.use(cookieParser());
 app.use(morgan("dev"));
@@ -44,12 +42,13 @@ app.use(
   })
 );
 
-const port = process.env.port;
+
 
 app.get("/", (req, res) => {
   res.send("Hello World");
 });
 
+//  midmponts
 
 
 
@@ -77,9 +76,8 @@ app.use("/api/vendor", VendorRouter);
 app.use("/api/workshift", WorkShiftRouter);
 app.use("/api/Organisation",Organisation)
 
-//midpionts
-
 
 
 
 app.listen(port, () => console.log(`server is on ${port}`))
+
