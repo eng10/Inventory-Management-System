@@ -3,12 +3,12 @@
   "version": "1.0.0",
   "main": "index.js",
   "type": "commonjs",
-  "scripts": {
-    "start": "nodemon  ./src/index.ts",
-    "build": "tsc",
-    "seed": "ts-node --transpile-only ./src/seed.ts",
-    "prisma": "npx prisma migrate dev --name init"
-  },
+ "scripts": {
+  "start": "nodemon ./src/index.ts",
+  "build": "tsc",
+  "seed": "ts-node --transpile-only ./src/seed.ts",
+  "prisma": "npx prisma migrate dev --name init"
+},
   "keywords": [],
   "author": "",
   "license": "ISC",
