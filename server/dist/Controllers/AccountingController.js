@@ -13,49 +13,51 @@ exports.Deleteaccounting = exports.getOneaccounting = exports.allaccountings = e
 const client_1 = require("@prisma/client");
 const prisma = new client_1.PrismaClient();
 const Registeraccounting = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
     try {
-        const { accountName, accountType, userUserId, } = req.body;
+        const { accountName, accountType } = req.body;
         const Createaccounting = yield prisma.accounting.create({
             data: {
                 accountName,
                 accountType,
-                userUserId: +userUserId,
-            }
+                userUserId: (_a = req.user) === null || _a === void 0 ? void 0 : _a.UserId,
+            },
         });
-        return res.status(201).json({
+        res.status(201).json({
             message: "successfully created accounting",
-            Createaccounting
+            Createaccounting,
         });
     }
     catch (error) {
-        return res.status(500).json({
-            message: "something went wrong please try again"
+        res.status(500).json({
+            message: "something went wrong please try again",
         });
     }
 });
 exports.Registeraccounting = Registeraccounting;
 const Updateaccounting = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
     try {
-        const { accountName, accountType, userUserId, } = req.body;
+        const { accountName, accountType } = req.body;
         const { id } = req.params;
         const upd = yield prisma.accounting.update({
             where: {
-                AccountingId: +id
+                AccountingId: +id,
             },
             data: {
                 accountName,
                 accountType,
-                userUserId: +userUserId,
-            }
+                userUserId: (_a = req.user) === null || _a === void 0 ? void 0 : _a.UserId,
+            },
         });
-        return res.status(201).json({
+        res.status(200).json({
             message: "successfully updated this accounting",
-            upd
+            upd,
         });
     }
     catch (error) {
-        return res.status(500).json({
-            message: "something went wrong please try again"
+        res.status(500).json({
+            message: "something went wrong please try again",
         });
     }
 });
@@ -63,11 +65,11 @@ exports.Updateaccounting = Updateaccounting;
 const allaccountings = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const accountings = yield prisma.accounting.findMany();
-        return res.status(201).json(accountings);
+        res.status(200).json(accountings);
     }
     catch (error) {
-        return res.status(500).json({
-            message: "something went wrong please try again"
+        res.status(500).json({
+            message: "something went wrong please try again",
         });
     }
 });
@@ -77,14 +79,14 @@ const getOneaccounting = (req, res) => __awaiter(void 0, void 0, void 0, functio
         const { id } = req.params;
         const accounting = yield prisma.accounting.findFirst({
             where: {
-                AccountingId: +id
-            }
+                AccountingId: +id,
+            },
         });
-        return res.status(201).json(accounting);
+        res.status(200).json(accounting);
     }
     catch (error) {
-        return res.status(500).json({
-            message: "something went wrong please try again"
+        res.status(500).json({
+            message: "something went wrong please try again",
         });
     }
 });
@@ -94,14 +96,14 @@ const Deleteaccounting = (req, res) => __awaiter(void 0, void 0, void 0, functio
         const { id } = req.params;
         const del = yield prisma.accounting.delete({
             where: {
-                AccountingId: +id
-            }
+                AccountingId: +id,
+            },
         });
-        return res.status(201).json(del);
+        res.status(200).json(del);
     }
     catch (error) {
-        return res.status(500).json({
-            message: "something went wrong please try again"
+        res.status(500).json({
+            message: "something went wrong please try again",
         });
     }
 });

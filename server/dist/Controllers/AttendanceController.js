@@ -19,17 +19,17 @@ const Registerattendance = (req, res) => __awaiter(void 0, void 0, void 0, funct
             data: {
                 date,
                 status,
-                employeeEmployeeId: +employeeEmployeeId
-            }
+                employeeEmployeeId: +employeeEmployeeId,
+            },
         });
-        return res.status(201).json({
+        res.status(201).json({
             message: "successfully created attendance",
-            Createattendance
+            Createattendance,
         });
     }
     catch (error) {
-        return res.status(500).json({
-            message: "something went wrong please try again"
+        res.status(500).json({
+            message: "something went wrong please try again",
         });
     }
 });
@@ -40,22 +40,22 @@ const Updateattendance = (req, res) => __awaiter(void 0, void 0, void 0, functio
         const { id } = req.params;
         const upd = yield prisma.attendance.update({
             where: {
-                AttendanceId: +id
+                AttendanceId: +id,
             },
             data: {
                 date,
                 status,
-                employeeEmployeeId: +employeeEmployeeId
-            }
+                employeeEmployeeId: +employeeEmployeeId,
+            },
         });
-        return res.status(201).json({
+        res.status(201).json({
             message: "successfully updated this attendance",
-            upd
+            upd,
         });
     }
     catch (error) {
-        return res.status(500).json({
-            message: "something went wrong please try again"
+        res.status(500).json({
+            message: "something went wrong please try again",
         });
     }
 });
@@ -63,11 +63,11 @@ exports.Updateattendance = Updateattendance;
 const allattendances = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const attendances = yield prisma.attendance.findMany();
-        return res.status(201).json(attendances);
+        res.status(201).json(attendances);
     }
     catch (error) {
-        return res.status(500).json({
-            message: "something went wrong please try again"
+        res.status(500).json({
+            message: "something went wrong please try again",
         });
     }
 });
@@ -77,14 +77,14 @@ const getOneattendance = (req, res) => __awaiter(void 0, void 0, void 0, functio
         const { id } = req.params;
         const attendance = yield prisma.attendance.findFirst({
             where: {
-                AttendanceId: +id
-            }
+                AttendanceId: +id,
+            },
         });
-        return res.status(201).json(attendance);
+        res.status(201).json(attendance);
     }
     catch (error) {
-        return res.status(500).json({
-            message: "something went wrong please try again"
+        res.status(500).json({
+            message: "something went wrong please try again",
         });
     }
 });
@@ -94,14 +94,14 @@ const Deleteattendance = (req, res) => __awaiter(void 0, void 0, void 0, functio
         const { id } = req.params;
         const del = yield prisma.attendance.delete({
             where: {
-                AttendanceId: +id
-            }
+                AttendanceId: +id,
+            },
         });
-        return res.status(201).json(del);
+        res.status(201).json(del);
     }
     catch (error) {
-        return res.status(500).json({
-            message: "something went wrong please try again"
+        res.status(500).json({
+            message: "something went wrong please try again",
         });
     }
 });

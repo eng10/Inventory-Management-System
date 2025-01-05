@@ -13,45 +13,48 @@ exports.Deletedepartment = exports.getOnedepartment = exports.alldepartments = e
 const client_1 = require("@prisma/client");
 const prisma = new client_1.PrismaClient();
 const Registerdepartment = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
     try {
         const { name } = req.body;
         const Createdepartment = yield prisma.department.create({
             data: {
                 name,
-            }
+                userUserId: (_a = req.user) === null || _a === void 0 ? void 0 : _a.UserId,
+            },
         });
         return res.status(201).json({
             message: "successfully created department",
-            Createdepartment
+            Createdepartment,
         });
     }
     catch (error) {
         return res.status(500).json({
-            message: "something went wrong please try again"
+            message: "something went wrong please try again",
         });
     }
 });
 exports.Registerdepartment = Registerdepartment;
+// azupdate
 const Updatedepartment = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { name } = req.body;
         const { id } = req.params;
         const upd = yield prisma.department.update({
             where: {
-                DepartmentId: +id
+                DepartmentId: +id,
             },
             data: {
                 name,
-            }
+            },
         });
         return res.status(201).json({
             message: "successfully updated this department",
-            upd
+            upd,
         });
     }
     catch (error) {
         return res.status(500).json({
-            message: "something went wrong please try again"
+            message: "something went wrong please try again",
         });
     }
 });
@@ -63,7 +66,7 @@ const alldepartments = (req, res) => __awaiter(void 0, void 0, void 0, function*
     }
     catch (error) {
         return res.status(500).json({
-            message: "something went wrong please try again"
+            message: "something went wrong please try again",
         });
     }
 });
@@ -73,14 +76,14 @@ const getOnedepartment = (req, res) => __awaiter(void 0, void 0, void 0, functio
         const { id } = req.params;
         const department = yield prisma.department.findFirst({
             where: {
-                DepartmentId: +id
-            }
+                DepartmentId: +id,
+            },
         });
         return res.status(201).json(department);
     }
     catch (error) {
         return res.status(500).json({
-            message: "something went wrong please try again"
+            message: "something went wrong please try again",
         });
     }
 });
@@ -90,14 +93,14 @@ const Deletedepartment = (req, res) => __awaiter(void 0, void 0, void 0, functio
         const { id } = req.params;
         const del = yield prisma.department.delete({
             where: {
-                DepartmentId: +id
-            }
+                DepartmentId: +id,
+            },
         });
         return res.status(201).json(del);
     }
     catch (error) {
         return res.status(500).json({
-            message: "something went wrong please try again"
+            message: "something went wrong please try again",
         });
     }
 });

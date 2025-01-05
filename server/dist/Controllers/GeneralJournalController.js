@@ -13,47 +13,49 @@ exports.DeletegeneralJournal = exports.getOnegeneralJournal = exports.allgeneral
 const client_1 = require("@prisma/client");
 const prisma = new client_1.PrismaClient();
 const RegistergeneralJournal = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
     try {
-        const { description, userUserId } = req.body;
+        const { description } = req.body;
         const CreategeneralJournal = yield prisma.generalJournal.create({
             data: {
                 description,
-                userUserId: +userUserId,
-            }
+                userUserId: (_a = req.user) === null || _a === void 0 ? void 0 : _a.UserId,
+            },
         });
         return res.status(201).json({
             message: "successfully created generalJournal",
-            CreategeneralJournal
+            CreategeneralJournal,
         });
     }
     catch (error) {
         return res.status(500).json({
-            message: "something went wrong please try again"
+            message: "something went wrong please try again",
         });
     }
 });
 exports.RegistergeneralJournal = RegistergeneralJournal;
 const UpdategeneralJournal = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
     try {
         const { userUserId, description } = req.body;
         const { id } = req.params;
         const upd = yield prisma.generalJournal.update({
             where: {
-                GeneralJournalId: +id
+                GeneralJournalId: +id,
             },
             data: {
                 description,
-                userUserId: +userUserId
-            }
+                userUserId: (_a = req.user) === null || _a === void 0 ? void 0 : _a.UserId,
+            },
         });
         return res.status(201).json({
             message: "successfully updated this generalJournal",
-            upd
+            upd,
         });
     }
     catch (error) {
         return res.status(500).json({
-            message: "something went wrong please try again"
+            message: "something went wrong please try again",
         });
     }
 });
@@ -65,7 +67,7 @@ const allgeneralJournals = (req, res) => __awaiter(void 0, void 0, void 0, funct
     }
     catch (error) {
         return res.status(500).json({
-            message: "something went wrong please try again"
+            message: "something went wrong please try again",
         });
     }
 });
@@ -75,14 +77,14 @@ const getOnegeneralJournal = (req, res) => __awaiter(void 0, void 0, void 0, fun
         const { id } = req.params;
         const generalJournal = yield prisma.generalJournal.findFirst({
             where: {
-                GeneralJournalId: +id
-            }
+                GeneralJournalId: +id,
+            },
         });
         return res.status(201).json(generalJournal);
     }
     catch (error) {
         return res.status(500).json({
-            message: "something went wrong please try again"
+            message: "something went wrong please try again",
         });
     }
 });
@@ -92,14 +94,14 @@ const DeletegeneralJournal = (req, res) => __awaiter(void 0, void 0, void 0, fun
         const { id } = req.params;
         const del = yield prisma.generalJournal.delete({
             where: {
-                GeneralJournalId: +id
-            }
+                GeneralJournalId: +id,
+            },
         });
         return res.status(201).json(del);
     }
     catch (error) {
         return res.status(500).json({
-            message: "something went wrong please try again"
+            message: "something went wrong please try again",
         });
     }
 });

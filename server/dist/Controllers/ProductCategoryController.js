@@ -9,100 +9,109 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.DeleteproductCategory = exports.getOneproductCategory = exports.allproductCategorys = exports.UpdateproductCategory = exports.RegisterproductCategory = void 0;
+exports.deleteProductCategory = exports.getProductCategoryById = exports.getAllProductCategories = exports.updateProductCategory = exports.registerProductCategory = void 0;
 const client_1 = require("@prisma/client");
 const prisma = new client_1.PrismaClient();
-const RegisterproductCategory = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+// Register a new ProductCategory
+const registerProductCategory = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
     try {
-        const { name, CategoryId, description, userUserId, } = req.body;
-        const CreateproductCategory = yield prisma.productCategory.create({
+        const { name, description } = req.body;
+        const createdProduct = yield prisma.productCategory.create({
             data: {
                 name,
-                CategoryId,
                 description,
-                userUserId,
-            }
-        });
-        return res.status(201).json({
-            message: "successfully created "
-        });
-    }
-    catch (error) {
-        return res.status(500).json({
-            message: "something went wrong please try again"
-        });
-    }
-});
-exports.RegisterproductCategory = RegisterproductCategory;
-const UpdateproductCategory = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const { name, CategoryId, description, userUserId, } = req.body;
-        const { id } = req.params;
-        const upd = yield prisma.productCategory.update({
-            where: {
-                CategoryId: +id
+                userUserId: (_a = req.user) === null || _a === void 0 ? void 0 : _a.UserId,
             },
+        });
+        res.status(201).json({
+            message: "Product category created successfully",
+            productCategory: createdProduct,
+        });
+    }
+    catch (error) {
+        console.error(error);
+        res.status(500).json({
+            message: "An error occurred while creating the product category. Please try again.",
+        });
+    }
+});
+exports.registerProductCategory = registerProductCategory;
+// Update an existing ProductCategory
+const updateProductCategory = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
+    try {
+        const { name, description } = req.body;
+        const { id } = req.params;
+        const updatedProductCategory = yield prisma.productCategory.update({
+            where: { CategoryId: +id },
             data: {
                 name,
-                CategoryId,
                 description,
-                userUserId,
-            }
+                userUserId: (_a = req.user) === null || _a === void 0 ? void 0 : _a.UserId,
+            },
         });
-        return res.status(201).json({
-            message: "successfully updated "
+        res.status(200).json({
+            message: "Product category updated successfully",
+            productCategory: updatedProductCategory,
         });
     }
     catch (error) {
-        return res.status(500).json({
-            message: "something went wrong please try again"
+        console.error(error);
+        res.status(500).json({
+            message: "An error occurred while updating the product category. Please try again.",
         });
     }
 });
-exports.UpdateproductCategory = UpdateproductCategory;
-const allproductCategorys = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.updateProductCategory = updateProductCategory;
+// Get all ProductCategories
+const getAllProductCategories = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const productCategorys = yield prisma.productCategory.findMany();
-        return res.status(201).json(productCategorys);
+        const productCategories = yield prisma.productCategory.findMany();
+        res.status(200).json(productCategories);
     }
     catch (error) {
-        return res.status(500).json({
-            message: "something went wrong please try again"
+        console.error(error);
+        res.status(500).json({
+            message: "An error occurred while retrieving product categories. Please try again.",
         });
     }
 });
-exports.allproductCategorys = allproductCategorys;
-const getOneproductCategory = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.getAllProductCategories = getAllProductCategories;
+// Get a single ProductCategory by ID
+const getProductCategoryById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id } = req.params;
         const productCategory = yield prisma.productCategory.findFirst({
-            where: {
-                CategoryId: +id
-            }
+            where: { CategoryId: +id },
         });
-        return res.status(201).json(productCategory);
+        res.status(200).json(productCategory);
     }
     catch (error) {
-        return res.status(500).json({
-            message: "something went wrong please try again"
+        console.error(error);
+        res.status(500).json({
+            message: "An error occurred while retrieving the product category. Please try again.",
         });
     }
 });
-exports.getOneproductCategory = getOneproductCategory;
-const DeleteproductCategory = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.getProductCategoryById = getProductCategoryById;
+// Delete a ProductCategory by ID
+const deleteProductCategory = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id } = req.params;
-        const del = yield prisma.productCategory.delete({
-            where: {
-                CategoryId: +id
-            }
+        const deletedProductCategory = yield prisma.productCategory.delete({
+            where: { CategoryId: +id },
         });
-        return res.status(201).json(del);
+        res.status(200).json({
+            message: "Product category deleted successfully",
+            productCategory: deletedProductCategory,
+        });
     }
     catch (error) {
-        return res.status(500).json({
-            message: "something went wrong please try again"
+        console.error(error);
+        res.status(500).json({
+            message: "An error occurred while deleting the product category. Please try again.",
         });
     }
 });
-exports.DeleteproductCategory = DeleteproductCategory;
+exports.deleteProductCategory = deleteProductCategory;

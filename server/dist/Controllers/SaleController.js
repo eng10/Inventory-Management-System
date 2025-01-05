@@ -13,51 +13,51 @@ exports.Deletesale = exports.getOnesale = exports.allsales = exports.Updatesale 
 const client_1 = require("@prisma/client");
 const prisma = new client_1.PrismaClient();
 const Registersale = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
     try {
-        const { quantity, totalAmount, CustomerId, ProductId, userUserId, } = req.body;
+        const { quantity, totalAmount, CustomerId, ProductId } = req.body;
         const Createsale = yield prisma.sale.create({
             data: {
                 quantity: +quantity,
                 totalAmount: +totalAmount,
                 CustomerId: +CustomerId,
                 ProductId: +ProductId,
-                userUserId: +userUserId,
-            }
+                userUserId: (_a = req.user) === null || _a === void 0 ? void 0 : _a.UserId,
+            },
         });
-        return res.status(201).json({
-            message: "successfully created "
-        });
+        return res.status(201).json(Object.assign({ message: "successfully created " }, Createsale));
     }
     catch (error) {
         return res.status(500).json({
-            message: "something went wrong please try again"
+            message: "something went wrong please try again",
         });
     }
 });
 exports.Registersale = Registersale;
 const Updatesale = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
     try {
-        const { quantity, totalAmount, CustomerId, ProductId, userUserId, } = req.body;
+        const { quantity, totalAmount, CustomerId, ProductId, userUserId } = req.body;
         const { id } = req.params;
         const upd = yield prisma.sale.update({
             where: {
-                SaleId: +id
+                SaleId: +id,
             },
             data: {
                 quantity: +quantity,
                 totalAmount: +totalAmount,
                 CustomerId: +CustomerId,
                 ProductId: +ProductId,
-                userUserId: +userUserId,
-            }
+                userUserId: (_a = req.user) === null || _a === void 0 ? void 0 : _a.UserId,
+            },
         });
         return res.status(201).json({
-            message: "successfully updated "
+            message: "successfully updated ",
         });
     }
     catch (error) {
         return res.status(500).json({
-            message: "something went wrong please try again"
+            message: "something went wrong please try again",
         });
     }
 });
@@ -69,7 +69,7 @@ const allsales = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
     catch (error) {
         return res.status(500).json({
-            message: "something went wrong please try again"
+            message: "something went wrong please try again",
         });
     }
 });
@@ -79,14 +79,14 @@ const getOnesale = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         const { id } = req.params;
         const sale = yield prisma.sale.findFirst({
             where: {
-                SaleId: +id
-            }
+                SaleId: +id,
+            },
         });
         return res.status(201).json(sale);
     }
     catch (error) {
         return res.status(500).json({
-            message: "something went wrong please try again"
+            message: "something went wrong please try again",
         });
     }
 });
@@ -96,14 +96,14 @@ const Deletesale = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         const { id } = req.params;
         const del = yield prisma.sale.delete({
             where: {
-                SaleId: +id
-            }
+                SaleId: +id,
+            },
         });
         return res.status(201).json(del);
     }
     catch (error) {
         return res.status(500).json({
-            message: "something went wrong please try again"
+            message: "something went wrong please try again",
         });
     }
 });

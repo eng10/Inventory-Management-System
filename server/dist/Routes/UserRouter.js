@@ -2,10 +2,10 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const UserController_1 = require("../Controllers/UserController");
-const UserRouter = (0, express_1.Router)();
-UserRouter.post('/register', UserController_1.RegisterUser);
-UserRouter.put('/update/:id', UserController_1.UpdateUser);
-UserRouter.delete('/delete/:id', UserController_1.DeleteUser);
-UserRouter.get('/:id', UserController_1.getOneUser);
-UserRouter.get('/all', UserController_1.allUsers);
-exports.default = UserRouter;
+const router = (0, express_1.Router)();
+router.post("/register", UserController_1.RegisterUser);
+router.post("/login", UserController_1.login);
+router.get("/all", UserController_1.allUsers);
+router.get("/one/:userid", UserController_1.getOneUser);
+router.put("/update/:id", UserController_1.UpdateUser);
+exports.default = router;

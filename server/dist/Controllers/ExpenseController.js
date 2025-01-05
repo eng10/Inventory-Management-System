@@ -13,49 +13,51 @@ exports.Deleteexpense = exports.getOneexpense = exports.allexpenses = exports.Up
 const client_1 = require("@prisma/client");
 const prisma = new client_1.PrismaClient();
 const Registerexpense = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
     try {
-        const { amount, description, userUserId } = req.body;
+        const { amount, description } = req.body.Expenseinterface;
         const Createexpense = yield prisma.expense.create({
             data: {
                 amount: +amount,
                 description,
-                userUserId: +userUserId
-            }
+                userUserId: (_a = req.user) === null || _a === void 0 ? void 0 : _a.UserId,
+            },
         });
         return res.status(201).json({
             message: "successfully created expense",
-            Createexpense
+            Createexpense,
         });
     }
     catch (error) {
         return res.status(500).json({
-            message: "something went wrong please try again"
+            message: "something went wrong please try again",
         });
     }
 });
 exports.Registerexpense = Registerexpense;
 const Updateexpense = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
     try {
-        const { amount, description, userUserId } = req.body;
+        const { amount, description } = req.body;
         const { id } = req.params;
         const upd = yield prisma.expense.update({
             where: {
-                ExpenseId: +id
+                ExpenseId: +id,
             },
             data: {
                 amount: +amount,
                 description,
-                userUserId: +userUserId
-            }
+                userUserId: (_a = req.user) === null || _a === void 0 ? void 0 : _a.UserId,
+            },
         });
         return res.status(201).json({
             message: "successfully updated this expense",
-            upd
+            upd,
         });
     }
     catch (error) {
         return res.status(500).json({
-            message: "something went wrong please try again"
+            message: "something went wrong please try again",
         });
     }
 });
@@ -67,7 +69,7 @@ const allexpenses = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     }
     catch (error) {
         return res.status(500).json({
-            message: "something went wrong please try again"
+            message: "something went wrong please try again",
         });
     }
 });
@@ -77,14 +79,14 @@ const getOneexpense = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         const { id } = req.params;
         const expense = yield prisma.expense.findFirst({
             where: {
-                ExpenseId: +id
-            }
+                ExpenseId: +id,
+            },
         });
         return res.status(201).json(expense);
     }
     catch (error) {
         return res.status(500).json({
-            message: "something went wrong please try again"
+            message: "something went wrong please try again",
         });
     }
 });
@@ -94,14 +96,14 @@ const Deleteexpense = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         const { id } = req.params;
         const del = yield prisma.expense.delete({
             where: {
-                ExpenseId: +id
-            }
+                ExpenseId: +id,
+            },
         });
         return res.status(201).json(del);
     }
     catch (error) {
         return res.status(500).json({
-            message: "something went wrong please try again"
+            message: "something went wrong please try again",
         });
     }
 });
