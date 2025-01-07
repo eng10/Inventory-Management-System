@@ -42,42 +42,37 @@ app.use(
   })
 );
 
-
-
-app.get("/", (req, res) => {
-  res.send("Hello World");
-});
-
 //  midmponts
 
+app.use("/api/v1/user", UserRouter);
+app.use("/api/v1/accounting", AccountingRouter);
+app.use("/api/v1/accountTransfer", AccountingTransferRouter);
+app.use("/api/v1/attendence", AttendeceRouter);
+app.use("/api/v1/booking", BookingRouter);
+app.use("/api/v1/branch", BranchRouter);
+app.use("/api/v1/customer", CustomerRouer);
+app.use("/api/v1/department", DepartmentRouter);
+app.use("/api/v1/employee", EmployeeRouter);
+app.use("/api/v1/expense", ExpenseRouter);
+app.use("/api/v1/generaljournal", GeneralJournalRouter);
+app.use("/api/v1/inventory", InventoryRouter);
+app.use("/api/v1/journalEntry", JournalEntryRouter);
+app.use("/api/v1/productCategory", ProductCategoryRouter);
+app.use("/api/v1/product", ProductRouter);
+app.use("/api/v1/productTransfer", ProductTransferRouter);
+app.use("/api/v1/purchase", PurchaseRouter);
+app.use("/api/v1/quickOrder", QuickOrderRouter);
+app.use("/api/v1/sale", SaleRouter);
+app.use("/api/v1/shiftcategory", ShiftCategoryRouter);
+app.use("/api/v1/vendor", VendorRouter);
+app.use("/api/v1/workshift", WorkShiftRouter);
+app.use("/api/v1/Organisation", Organisation);
 
-
-app.use("/api/user", UserRouter);
-app.use("/api/accounting", AccountingRouter);
-app.use("/api/accountTransfer", AccountingTransferRouter);
-app.use("/api/attendence", AttendeceRouter);
-app.use("/api/booking", BookingRouter);
-app.use("/api/branch", BranchRouter);
-app.use("/api/customer", CustomerRouer);
-app.use("/api/department", DepartmentRouter);
-app.use("/api/employee", EmployeeRouter);
-app.use("/api/expense", ExpenseRouter);
-app.use("/api/generaljournal", GeneralJournalRouter);
-app.use("/api/inventory", InventoryRouter);
-app.use("/api/journalEntry", JournalEntryRouter);
-app.use("/api/productCategory", ProductCategoryRouter);
-app.use("/api/product", ProductRouter);
-app.use("/api/productTransfer", ProductTransferRouter);
-app.use("/api/purchase", PurchaseRouter);
-app.use("/api/quickOrder", QuickOrderRouter);
-app.use("/api/sale", SaleRouter);
-app.use("/api/shiftcategory", ShiftCategoryRouter);
-app.use("/api/vendor", VendorRouter);
-app.use("/api/workshift", WorkShiftRouter);
-app.use("/api/Organisation",Organisation)
-
-
-
-
-app.listen(port, () => console.log(`server is on ${port}`))
-
+// Catch-all route for undefined routes (404 handler)
+app.all("*", (req, res) => {
+  res.status(404).json({
+    message: "API Not Found",
+    status: 404,
+  });
+});
+app.listen(port, () => console.log(`server is on ${port}`));
