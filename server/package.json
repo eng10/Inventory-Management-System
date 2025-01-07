@@ -5,10 +5,10 @@
   "type": "commonjs",
   "scripts": {
     "start": "nodemon ./src/index.ts",
-    "build": "tsc",
-    "vercel-build": "node ./build.js",
+     "build": "tsc",
+  "vercel-build": "npm run build",
     "seed": "ts-node --transpile-only ./src/seed.ts",
-    "prisma": "npx prisma migrate dev --name init"
+    "prisma": "npx prisma migrate dev --name init",
   },
   "keywords": [],
   "author": "",

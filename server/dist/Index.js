@@ -43,31 +43,35 @@ app.use((0, cors_1.default)({
     credentials: true,
     methods: "GET,POST,PUT,DELETE,OPTIONS",
 }));
-app.get("/", (req, res) => {
-    res.send("Hello World");
-});
 //  midmponts
-app.use("/api/user", UserRouter_1.default);
-app.use("/api/accounting", AccountingRouter_1.default);
-app.use("/api/accountTransfer", AccountingTransferRouter_1.default);
-app.use("/api/attendence", AttendeceRouter_1.default);
-app.use("/api/booking", BookingRouter_1.default);
-app.use("/api/branch", BranchRouter_1.default);
-app.use("/api/customer", CustomerRouer_1.default);
-app.use("/api/department", DepartmentRouter_1.default);
-app.use("/api/employee", EmployeeRouter_1.default);
-app.use("/api/expense", ExpenseRouter_1.default);
-app.use("/api/generaljournal", GeneralJournalRouter_1.default);
-app.use("/api/inventory", InventoryRouter_1.default);
-app.use("/api/journalEntry", JournalEntryRouter_1.default);
-app.use("/api/productCategory", ProductCategoryRouter_1.default);
-app.use("/api/product", ProductRouter_1.default);
-app.use("/api/productTransfer", ProductTransferRouter_1.default);
-app.use("/api/purchase", PurchaseRouter_1.default);
-app.use("/api/quickOrder", QuickOrderRouter_1.default);
-app.use("/api/sale", SaleRouter_1.default);
-app.use("/api/shiftcategory", ShiftCategoryRouter_1.default);
-app.use("/api/vendor", VendorRouter_1.default);
-app.use("/api/workshift", WorkShiftRouter_1.default);
-app.use("/api/Organisation", OrganisationRoutes_1.default);
+app.use("/api/v1/user", UserRouter_1.default);
+app.use("/api/v1/accounting", AccountingRouter_1.default);
+app.use("/api/v1/accountTransfer", AccountingTransferRouter_1.default);
+app.use("/api/v1/attendence", AttendeceRouter_1.default);
+app.use("/api/v1/booking", BookingRouter_1.default);
+app.use("/api/v1/branch", BranchRouter_1.default);
+app.use("/api/v1/customer", CustomerRouer_1.default);
+app.use("/api/v1/department", DepartmentRouter_1.default);
+app.use("/api/v1/employee", EmployeeRouter_1.default);
+app.use("/api/v1/expense", ExpenseRouter_1.default);
+app.use("/api/v1/generaljournal", GeneralJournalRouter_1.default);
+app.use("/api/v1/inventory", InventoryRouter_1.default);
+app.use("/api/v1/journalEntry", JournalEntryRouter_1.default);
+app.use("/api/v1/productCategory", ProductCategoryRouter_1.default);
+app.use("/api/v1/product", ProductRouter_1.default);
+app.use("/api/v1/productTransfer", ProductTransferRouter_1.default);
+app.use("/api/v1/purchase", PurchaseRouter_1.default);
+app.use("/api/v1/quickOrder", QuickOrderRouter_1.default);
+app.use("/api/v1/sale", SaleRouter_1.default);
+app.use("/api/v1/shiftcategory", ShiftCategoryRouter_1.default);
+app.use("/api/v1/vendor", VendorRouter_1.default);
+app.use("/api/v1/workshift", WorkShiftRouter_1.default);
+app.use("/api/v1/Organisation", OrganisationRoutes_1.default);
+// Catch-all route for undefined routes (404 handler)
+app.all("*", (req, res) => {
+    res.status(404).json({
+        message: "API Not Found",
+        status: 404,
+    });
+});
 app.listen(port, () => console.log(`server is on ${port}`));
